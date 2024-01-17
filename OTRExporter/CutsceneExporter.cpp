@@ -607,7 +607,6 @@ void OTRExporter_Cutscene::SaveMM(ZCutscene* cs, BinaryWriter* writer) {
 
             case CutsceneMM_CommandType::CS_CMD_START_AMBIENCE:
             case CutsceneMM_CommandType::CS_CMD_FADE_OUT_AMBIENCE:
-            case CutsceneMM_CommandType::CS_CMD_DESTINATION:
             case CutsceneMM_CommandType::CS_CMD_CHOOSE_CREDITS_SCENES:
 
             case CutsceneMM_CommandType::CS_CMD_UNK_DATA_FA:
@@ -626,6 +625,15 @@ void OTRExporter_Cutscene::SaveMM(ZCutscene* cs, BinaryWriter* writer) {
                 for (const auto e : cs->commands[i]->entries) {
                     writer->Write(CMD_BBH(0, e->base, e->startFrame));
                     writer->Write(CMD_HH(e->endFrame, e->endFrame));
+                }
+                break;
+            }
+            case CutsceneMM_CommandType::CS_CMD_DESTINATION: {
+                writer->Write((uint32_t)cs->commands[i]->commandID);
+                writer->Write((uint32_t)cs->commands[i]->entries.size());
+                for (const auto e : cs->commands[i]->entries) {
+                    writer->Write(CMD_HH(e->base, e->startFrame));
+                    writer->Write(CMD_HH(e->endFrame, e->pad));
                 }
                 break;
             }

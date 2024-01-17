@@ -356,6 +356,10 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
                 else
                     roomName = OTRExporter_DisplayList::GetPathToRes(room, StringHelper::Sprintf("%s_room_%02d", StringHelper::Split(room->GetName(), "_scene")[0].c_str(), i));
 
+                if (room->zroomType == ZResourceType::AltHeader) {
+                    roomName = OTRExporter_DisplayList::GetPathToRes(room, StringHelper::Sprintf("%s_room_%02d", cmd->parent->GetName().c_str(), i));
+                }
+
                 writer->Write(roomName);
                 writer->Write(cmdRoom->romfile->rooms[i].virtualAddressStart);
                 writer->Write(cmdRoom->romfile->rooms[i].virtualAddressEnd);
